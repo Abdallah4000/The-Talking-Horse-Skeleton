@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Horse Skeleton - Interactive 3D Learning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a4b8c;
+            --secondary-color: #2a75bb;
+            --accent-color: #3a9efd;
+            --light-color: #e6f2ff;
+            --dark-color: #0a2a4a;
+            --text-color: #333;
+            --text-light: #fff;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .rtl {
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        .rtl nav ul li {
+            margin-left: 0;
+            margin-right: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .rtl nav ul li a::after {
+            left: auto;
+            right: 0;
+        }
+
+        .language-toggle {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .language-toggle:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .language-toggle i {
+            margin-right: 5px;
+        }
+
+        .rtl .language-toggle i {
+            margin-right: 0;
+            margin-left: 5px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background-color: white;
+        }
+
+        .download-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .rtl .download-btn i {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .rtl .section-title h2::after {
+            left: auto;
+            right: 50%;
+            transform: translateX(50%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .feature-card ul {
+            list-style-position: inside;
+            padding-left: 20px;
+        }
+
+        .rtl .feature-card ul {
+            padding-left: 0;
+            padding-right: 20px;
+        }
+
+        .feature-card li {
+            margin-bottom: 10px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background-color: var(--light-color);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .rtl .step {
+            flex-direction: row-reverse;
+        }
+
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Screenshots Section */
+        .screenshots-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .screenshot {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Museum Structure Section */
+        .museum-structure {
+            text-align: center;
+        }
+
+        .museum-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .museum-structure img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Team Section */
+        .team-section {
+            background-color: var(--light-color);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .team-info {
+            padding: 20px;
+        }
+
+        .team-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .team-info p.position {
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .team-info p.role {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .team-info p.responsibility {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f5f9ff;
+            border-radius: 5px;
+        }
+
+        .team-photo-group {
+            max-width: 800px;
+            margin: 40px auto 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-photo-group img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--text-light);
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .rtl .footer-column ul li a:hover {
+            padding-left: 0;
+            padding-right: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                transform: translateY(-150%);
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            nav.active {
+                transform: translateY(0);
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+
+            .rtl nav ul li {
+                margin: 0 0 15px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 150px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container container">
+            <div class="logo">
+                <img src="logo.png" alt="Horse Skeleton App Logo">
+                <span class="en-text">The Talking Horse Skeleton</span>
+                <span class="ar-text" style="display: none;">الهيكل العظمي الناطق للحصان</span>
+            </div>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#features" class="en-text">Features</a><a href="#features" class="ar-text" style="display: none;">المميزات</a></li>
+                    <li><a href="#how-it-works" class="en-text">How It Works</a><a href="#how-it-works" class="ar-text" style="display: none;">كيف يعمل</a></li>
+                    <li><a href="#screenshots" class="en-text">Screenshots</a><a href="#screenshots" class="ar-text" style="display: none;">لقطات</a></li>
+                    <li><a href="#museum" class="en-text">Museum Structure</a><a href="#museum" class="ar-text" style="display: none;">هيكل المتحف</a></li>
+                    <li><a href="#team" class="en-text">Team</a><a href="#team" class="ar-text" style="display: none;">الفريق</a></li>
+                </ul>
+            </nav>
+            <button class="language-toggle" id="languageToggle">
+                <i class="fas fa-language"></i>
+                <span class="en-text">العربية</span>
+                <span class="ar-text" style="display: none;">English</span>
+            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="en-text">The Talking Horse Skeleton</h1>
+            <h1 class="ar-text" style="display: none;">الهيكل العظمي الناطق للحصان</h1>
+            
+            <p class="en-text">An Interactive 3D Learning Experience</p>
+            <p class="ar-text" style="display: none;">تجربة تعليمية ثلاثية الأبعاد تفاعلية</p>
+            
+            <div class="download-buttons">
+                <a href="https://drive.google.com/file/d/1HfiPw3u7SaPvV8VF1QSxeIwkel3VSJlJ/view?usp=drivesdk" class="download-btn">
+                    <i class="fab fa-android"></i>
+                    <span class="en-text">Download for Android</span>
+                    <span class="ar-text" style="display: none;">تحميل للآندرويد</span>
+                </a>
+                <a href="https://drive.google.com/file/d/12Hnyfh171jZ6Ia8d2Ov0cxEhnkr7Q2fD/view?usp=drivesdk" class="download-btn">
+                    <i class="fab fa-windows"></i>
+                    <span class="en-text">Download for Windows</span>
+                    <span class="ar-text" style="display: none;">تحميل للويندوز</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="en-text">Key Features</h2>
+                <h2 class="ar-text" style="display: none;">المميزات الرئيسية</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3 class="en-text">QR Code Integration</h3>
+                    <h3 class="ar-text" style="display: none;">تكامل رمز الاستجابة السريعة</h3>
+                    <ul class="en-text">
+                        <li>Each bone tagged with unique QR code</li>
+                        <li>Instant access to bone information</li>
+                        <li>Bridges physical and digital learning</li>
+                        <li>Quick reference during study sessions</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>كل عظمة معلمة برمز استجابة سريع فريد</li>
+                        <li>وصول فوري لمعلومات العظمة</li>
+                        <li>يربط بين التعلم المادي والرقمي</li>
+                        <li>مرجع سريع أثناء جلسات الدراسة</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3 class="en-text">Time Tracking</h3>
+                    <h3 class="ar-text" style="display: none;">تتبع الوقت</h3>
+                    <ul class="en-text">
+                        <li>Tracks total learning session duration</li>
+                        <li>Measures engagement with complete skeleton</li>
+                        <li>Provides insights into study behavior</li>
+                        <li>Helps optimize learning efficiency</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>يتتبع مدة جلسة التعلم الكلية</li>
+                        <li>يقيس التفاعل مع الهيكل العظمي الكامل</li>
+                        <li>يوفر رؤى حول سلوك الدراسة</li>
+                        <li>يساعد في تحسين كفاءة التعلم</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="en-text">Adaptive Quiz System</h3>
+                    <h3 class="ar-text" style="display: none;">نظام اختبار تكيفي</h3>
+                    <ul class="en-text">
+                        <li>Three-tiered assessment modes</li>
+                        <li>Practice mode reinforces learned material</li>
+                        <li>Academic mode for structured testing</li>
+                        <li>Comprehensive mode for advanced evaluation</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>ثلاثة مستويات لأنماط التقييم</li>
+                        <li>وضع الممارسة يعزز المواد المكتسبة</li>
+                        <li>وضع الأكاديمي للاختبارات المنظمة</li>
+                        <li>وضع الشامل للتقييم المتقدم</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="en-text">Performance Analytics</h3>
+                    <h3 class="ar-text" style="display: none;">تحليلات الأداء</h3>
+                    <ul class="en-text">
+                        <li>Tracks bone-specific success rates</li>
+                        <li>Visualizes overall student progress</li>
+                        <li>Provides class-wide performance data</li>
+                        <li>Identifies learning gaps</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>يتتبع معدلات النجاح الخاصة بكل عظمة</li>
+                        <li>يصور التقدم العام للطالب</li>
+                        <li>يوفر بيانات أداء للفصل بأكمله</li>
+                        <li>يحدد فجوات التعلم</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h3 class="en-text">Pronunciation System</h3>
+                    <h3 class="ar-text" style="display: none;">نظام النطق</h3>
+                    <ul class="en-text">
+                        <li>Built-in voice pronunciation</li>
+                        <li>Clear spoken explanations</li>
+                        <li>Customizable content by educators</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>نطق صوتي مدمج</li>
+                        <li>شروحات صوتية واضحة</li>
+                        <li>محتوى قابل للتخصيص من المعلمين</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3 class="en-text">Research Integration</h3>
+                    <h3 class="ar-text" style="display: none;">تكامل البحث</h3>
+                    <ul class="en-text">
+                        <li>Collects engagement data for research</li>
+                        <li>Analyzes learning behavior patterns</li>
+                        <li>Supports educational effectiveness studies</li>
+                        <li>Helps refine teaching methods</li>
+                    </ul>
+                    <ul class="ar-text" style="display: none;">
+                        <li>يجمع بيانات التفاعل للأبحاث</li>
+                        <li>يحلل أنماط سلوك التعلم</li>
+                        <li>يدعم دراسات فعالية التعليم</li>
+                        <li>يساعد في تحسين طرق التدريس</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="en-text">How It Works</h2>
+                <h2 class="ar-text" style="display: none;">كيف يعمل التطبيق</h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="en-text">Scan QR Codes on Physical Skeleton</h3>
+                        <h3 class="ar-text" style="display: none;">مسح رموز QR على الهيكل العظمي المادي</h3>
+                        <p class="en-text">Each bone in the physical horse skeleton is labeled with a unique QR code. When scanned with the app, it displays detailed information about that specific bone including 3D models, images, and explanatory text.</p>
+                        <p class="ar-text" style="display: none;">كل عظمة في الهيكل العظمي الفعلي للحصان معلمة برمز QR فريد. عند مسحها باستخدام التطبيق، يعرض معلومات مفصلة عن تلك العظمة بما في ذلك نماذج ثلاثية الأبعاد، صور، ونص توضيحي.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="en-text">Interactive 3D Exploration</h3>
+                        <h3 class="ar-text" style="display: none;">استكشاف ثلاثي الأبعاد تفاعلي</h3>
+                        <p class="en-text">The app provides a fully interactive 3D model of the horse skeleton that can be rotated, zoomed, and examined from all angles. Bones can be selected to view detailed information.</p>
+                        <p class="ar-text" style="display: none;">يوفر التطبيق نموذجًا ثلاثي الأبعاد كاملاً للهيكل العظمي للحصان يمكن تدويره، تكبيره، وفحصه من جميع الزوايا. يمكن اختيار العظام لعرض معلومات مفصلة.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="en-text">Engagement Tracking</h3>
+                        <h3 class="ar-text" style="display: none;">تتبع التفاعل</h3>
+                        <p class="en-text">The system tracks how long students spend with each bone and with the complete skeleton, providing valuable data about study patterns and areas of focus.</p>
+                        <p class="ar-text" style="display: none;">يتتبع النظام المدة التي يقضيها الطلاب مع كل عظمة ومع الهيكل العظمي الكامل، مما يوفر بيانات قيمة عن أنماط الدراسة ومناطق التركيز.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3 class="en-text">Adaptive Assessment</h3>
+                        <h3 class="ar-text" style="display: none;">تقييم تكيفي</h3>
+                        <p class="en-text">Students can test their knowledge through three quiz modes that adapt to their learning progress, reinforcing material they've studied and identifying areas needing more attention.</p>
+                        <p class="ar-text" style="display: none;">يمكن للطلاب اختبار معرفتهم من خلال ثلاثة أنماط اختبار تتكيف مع تقدمهم في التعلم، وتعزز المواد التي درسوها وتحدد المجالات التي تحتاج إلى مزيد من الاهتمام.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3 class="en-text">Performance Analysis</h3>
+                        <h3 class="ar-text" style="display: none;">تحليل الأداء</h3>
+                        <p class="en-text">Detailed analytics help students and educators understand strengths and weaknesses, with visual representations of progress and success rates across all bones.</p>
+                        <p class="ar-text" style="display: none;">تساعد التحليلات التفصيلية الطلاب والمعلمين على فهم نقاط القوة والضعف، مع تمثيلات بصرية للتقدم ومعدلات النجاح عبر جميع العظام.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section class="section" id="screenshots">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="en-text">Application Screenshots</h2>
+                <h2 class="ar-text" style="display: none;">لقطات من التطبيق</h2>
+            </div>
+            <div class="screenshots-container">
+                <div class="screenshot">
+                    <img src="screenshot1.jpg" alt="App Screenshot 1">
+                </div>
+                <div class="screenshot">
+                    <img src="screenshot2.jpg" alt="App Screenshot 2">
+                </div>
+                <div class="screenshot">
+                    <img src="screenshot3.jpg" alt="App Screenshot 3">
+                </div>
+                <div class="screenshot">
+                    <img src="screenshot4.jpg" alt="App Screenshot 4">
+                </div>
+                <div class="screenshot">
+                    <img src="screenshot5.jpg" alt="App Screenshot 5">
+                </div>
+                <div class="screenshot">
+                    <img src="screenshot6.jpg" alt="App Screenshot 6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Museum Structure Section -->
+    <section class="section museum-structure" id="museum">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="en-text">Museum Structure</h2>
+                <h2 class="ar-text" style="display: none;">هيكل المتحف</h2>
+            </div>
+            <p class="en-text">The physical horse skeleton of our research</p>
+            <p class="ar-text" style="display: none;">الهيكل العظمي الفعلي للحصان في بحثنا</p>
+            <div class="museum-images">
+                <img src="museum-structure1.jpg" alt="Museum Horse Skeleton Structure 1">
+                <img src="museum-structure2.jpg" alt="Museum Horse Skeleton Structure 2">
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section team-section" id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="en-text">Our Team</h2>
+                <h2 class="ar-text" style="display: none;">فريق العمل</h2>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="team1.jpg" alt="Team Member" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="en-text">Prof. Dr. Anwar Al-Shafi'i</h3>
+                        <h3 class="ar-text" style="display: none;">ا.د/ أنور الشافعي</h3>
+                        <p class="position en-text">Professor of Anatomy and Embryology</p>
+                        <p class="position ar-text" style="display: none;">أستاذ التشريح والأجنة</p>
+                        <p class="role en-text">Project Leader</p>
+                        <p class="role ar-text" style="display: none;">قائد المشروع</p>
+                        <p class="responsibility en-text">Prepares physical skeleton: Cleaning, articulating, and preserving the real horse skeleton for display/study</p>
+                        <p class="responsibility ar-text" style="display: none;">إعداد الهيكل العظمي المادي: تنظيف، تركيب، وحفظ الهيكل العظمي الفعلي للحصان للعرض/الدراسة</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="team2.jpg" alt="Team Member" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="en-text">Dr. Abeer Wasef</h3>
+                        <h3 class="ar-text" style="display: none;">د/ عبير واصف</h3>
+                        <p class="position en-text">English Literature Professor</p>
+                        <p class="position ar-text" style="display: none;">مدرس الأدب الإنجليزي</p>
+                        <p class="role en-text">Audio Specialist</p>
+                        <p class="role ar-text" style="display: none;">أخصائي الصوت</p>
+                        <p class="responsibility en-text">Audio System Creation & edit pronunciations</p>
+                        <p class="responsibility ar-text" style="display: none;">إنشاء نظام الصوت وتحرير النطق</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="team3.jpg" alt="Team Member" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="en-text">Eng. Khaled Al-Jayyar</h3>
+                        <h3 class="ar-text" style="display: none;">م/ خالد الجيار</h3>
+                        <p class="position en-text">Assistant Professor of Communications Engineering</p>
+                        <p class="position ar-text" style="display: none;">المدرس المساعد بقسم هندسة الإتصالات</p>
+                        <p class="role en-text">System Integrator</p>
+                        <p class="role ar-text" style="display: none;">مكامل النظام</p>
+                        <p class="responsibility en-text">Links physical/digital systems</p>
+                        <p class="responsibility ar-text" style="display: none;">ربط الأنظمة المادية والرقمية</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="team4.jpg" alt="Team Member" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="en-text">Eng. Abdullah Mohammed</h3>
+                        <h3 class="ar-text" style="display: none;">م/عبدالله محمد</h3>
+                        <p class="position en-text">Communications Engineer</p>
+                        <p class="position ar-text" style="display: none;">مهندس الاتصالات والالكترونيات</p>
+                        <p class="role en-text">App Developer</p>
+                        <p class="role ar-text" style="display: none;">مطور التطبيق</p>
+                        <p class="responsibility en-text">Simulation App Developer: Builds 3D app + features</p>
+                        <p class="responsibility ar-text" style="display: none;">مطور تطبيق المحاكاة: يبني تطبيق 3D + الميزات</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="team5.jpg" alt="Team Member" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="en-text">Dr. Osama Mashaly</h3>
+                        <h3 class="ar-text" style="display: none;">ط.ب/ أسامة مشالي</h3>
+                        <p class="position en-text">Anatomy and Embryology Teaching Assistant</p>
+                        <p class="position ar-text" style="display: none;">معيد التشريح والأجنة</p>
+                        <p class="role en-text">Content Manager</p>
+                        <p class="role ar-text" style="display: none;">مدير المحتوى</p>
+                        <p class="responsibility en-text">Content Management: Uploads/manages bone data, questions, and users</p>
+                        <p class="responsibility ar-text" style="display: none;">إدارة المحتوى: تحميل/إدارة بيانات العظام، الأسئلة، والمستخدمين</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-photo-group">
+                <img src="team-group.jpg" alt="Team Group Photo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="en-text">Quick Links</h3>
+                    <h3 class="ar-text" style="display: none;">روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#features" class="en-text">Features</a><a href="#features" class="ar-text" style="display: none;">المميزات</a></li>
+                        <li><a href="#how-it-works" class="en-text">How It Works</a><a href="#how-it-works" class="ar-text" style="display: none;">كيف يعمل</a></li>
+                        <li><a href="#screenshots" class="en-text">Screenshots</a><a href="#screenshots" class="ar-text" style="display: none;">لقطات</a></li>
+                        <li><a href="#team" class="en-text">Our Team</a><a href="#team" class="ar-text" style="display: none;">فريقنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="en-text">Downloads</h3>
+                    <h3 class="ar-text" style="display: none;">التحميلات</h3>
+                    <ul>
+                        <li><a href="https://drive.google.com/file/d/1HfiPw3u7SaPvV8VF1QSxeIwkel3VSJlJ/view?usp=drivesdk" class="en-text">Android App</a><a href="https://drive.google.com/file/d/1HfiPw3u7SaPvV8VF1QSxeIwkel3VSJlJ/view?usp=drivesdk" class="ar-text" style="display: none;">تطبيق الآندرويد</a></li>
+                        <li><a href="https://drive.google.com/file/d/12Hnyfh171jZ6Ia8d2Ov0cxEhnkr7Q2fD/view?usp=drivesdk" class="en-text">Windows App</a><a href="https://drive.google.com/file/d/12Hnyfh171jZ6Ia8d2Ov0cxEhnkr7Q2fD/view?usp=drivesdk" class="ar-text" style="display: none;">تطبيق الويندوز</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="en-text">&copy; 2025 The Talking Horse Skeleton. All rights reserved.</p>
+                <p class="ar-text" style="display: none;">&copy; 2025 الهيكل العظمي الناطق للحصان. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language Toggle Functionality
+        const languageToggle = document.getElementById('languageToggle');
+        const arabicElements = document.querySelectorAll('.ar-text');
+        const englishElements = document.querySelectorAll('.en-text');
+        let currentLanguage = 'en';
+
+        languageToggle.addEventListener('click', () => {
+            if (currentLanguage === 'en') {
+                // Switch to Arabic
+                arabicElements.forEach(el => el.style.display = 'inline');
+                englishElements.forEach(el => el.style.display = 'none');
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+                document.body.classList.add('rtl');
+                currentLanguage = 'ar';
+            } else {
+                // Switch to English
+                arabicElements.forEach(el => el.style.display = 'none');
+                englishElements.forEach(el => el.style.display = 'inline');
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'en');
+                document.body.classList.remove('rtl');
+                currentLanguage = 'en';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add shadow to header on scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                document.querySelector('header').style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.2)';
+            } else {
+                document.querySelector('header').style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
